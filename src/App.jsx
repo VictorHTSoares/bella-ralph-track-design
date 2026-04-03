@@ -12,6 +12,7 @@ import Sidebar from './components/Sidebar'
 import StatusBar from './components/StatusBar'
 import ValidationPanel from './components/ValidationPanel'
 import Onboarding from './components/Onboarding'
+import { Layer } from 'react-konva'
 import LayoutCanvas from './components/canvas/LayoutCanvas'
 import BoundaryLayer from './components/canvas/BoundaryLayer'
 import TrackPiece from './components/canvas/TrackPiece'
@@ -237,22 +238,24 @@ export default function App() {
           stageRef={stageRef}
         >
           <BoundaryLayer boundary={state.boundary} />
-          {state.pieces.map((piece) => {
-            const catPiece = catMap[piece.pieceId]
-            if (!catPiece) return null
-            return (
-              <TrackPiece
-                key={piece.instanceId}
-                piece={piece}
-                catPiece={catPiece}
-                ppi={ppi}
-                isSelected={piece.instanceId === selectedInstanceId}
-                onSelect={() => setSelectedInstanceId(piece.instanceId)}
-                onDragEnd={(e) => handleDragEnd(piece.instanceId, e)}
-                onContextMenu={(e) => handleRightClick(piece.instanceId, e)}
-              />
-            )
-          })}
+          <Layer>
+            {state.pieces.map((piece) => {
+              const catPiece = catMap[piece.pieceId]
+              if (!catPiece) return null
+              return (
+                <TrackPiece
+                  key={piece.instanceId}
+                  piece={piece}
+                  catPiece={catPiece}
+                  ppi={ppi}
+                  isSelected={piece.instanceId === selectedInstanceId}
+                  onSelect={() => setSelectedInstanceId(piece.instanceId)}
+                  onDragEnd={(e) => handleDragEnd(piece.instanceId, e)}
+                  onContextMenu={(e) => handleRightClick(piece.instanceId, e)}
+                />
+              )
+            })}
+          </Layer>
         </LayoutCanvas>
 
         {showValidation && (
