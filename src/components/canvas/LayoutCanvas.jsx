@@ -4,7 +4,7 @@ import GridLayer from './GridLayer'
 
 const CANVAS_SIZE = 3000
 
-export default function LayoutCanvas({ children, showGrid, onCanvasClick, pendingPieceId, stageRef }) {
+export default function LayoutCanvas({ children, showGrid, onCanvasClick, onMouseMove, pendingPieceId, stageRef }) {
   const containerRef = useRef(null)
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 })
   const [stagePos, setStagePos] = useState({ x: 0, y: 0 })
@@ -51,11 +51,19 @@ export default function LayoutCanvas({ children, showGrid, onCanvasClick, pendin
     }
   }
 
+  function handleMouseMove(e) {
+    if (!onMouseMove) return
+    const stage = e.target.getStage()
+    const pos = stage.getRelativePointerPosition()
+    onMouseMove(pos)
+  }
+
   return (
     <div
       ref={containerRef}
       style={{ flex: 1, overflow: 'hidden', background: '#f5f5f5',
                cursor: pendingPieceId ? 'crosshair' : 'default' }}
+      onMouseLeave={() => onMouseMove && onMouseMove(null)}
     >
       <Stage
         ref={stageRef}
@@ -66,9 +74,14 @@ export default function LayoutCanvas({ children, showGrid, onCanvasClick, pendin
         scaleX={stageScale}
         scaleY={stageScale}
         draggable={!pendingPieceId}
-        onDragEnd={(e) => setStagePos({ x: e.target.x(), y: e.target.y() })}
+        onDragEnd={(e) => {
+          if (e.target === e.target.getStage()) {
+            setStagePos({ x: e.target.x(), y: e.target.y() })
+          }
+        }}
         onWheel={handleWheel}
         onClick={handleStageClick}
+        onMouseMove={handleMouseMove}
       >
         <GridLayer width={CANVAS_SIZE} height={CANVAS_SIZE} gridSpacing={100} visible={showGrid} />
         {children}

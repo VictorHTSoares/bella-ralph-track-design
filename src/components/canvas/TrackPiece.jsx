@@ -73,7 +73,7 @@ function CrossingShape({ geometry, connectors }) {
   )
 }
 
-export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDragEnd, onContextMenu }) {
+export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDragEnd, onContextMenu, isGhost = false }) {
   const { x, y, rotation, mirrorX, connectedTo } = piece
   const { geometry, connectors } = catPiece
 
@@ -88,10 +88,12 @@ export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDr
       y={y}
       rotation={rotation}
       scaleX={mirrorX ? -1 : 1}
-      draggable
-      onClick={(e) => { e.cancelBubble = true; onSelect?.() }}
-      onContextMenu={onContextMenu}
-      onDragEnd={onDragEnd}
+      draggable={!isGhost}
+      listening={!isGhost}
+      opacity={isGhost ? 0.45 : 1}
+      onClick={isGhost ? undefined : (e) => { e.cancelBubble = true; onSelect?.() }}
+      onContextMenu={isGhost ? undefined : onContextMenu}
+      onDragEnd={isGhost ? undefined : onDragEnd}
     >
       {isTurnout && <TurnoutShape connectors={connectors} />}
       {isCrossover && <CrossoverShape connectors={connectors} />}
@@ -105,7 +107,7 @@ export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDr
           fill="transparent"
         />
       )}
-      {connectors.map((c) => {
+      {!isGhost && connectors.map((c) => {
         const cx = c.x * PPT
         const cy = c.y * PPT
         const isConnected = connectedTo[c.id] !== null && connectedTo[c.id] !== undefined

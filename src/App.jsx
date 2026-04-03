@@ -28,6 +28,7 @@ export default function App() {
   const [state, dispatch] = useLayoutReducer()
   const [selectedPieceId, setSelectedPieceId] = useState(null)    // palette selection (catalogue id)
   const [selectedInstanceId, setSelectedInstanceId] = useState(null) // placed piece selection
+  const [mouseCanvasPos, setMouseCanvasPos] = useState(null)
   const [freeRotate, setFreeRotate] = useState(false)
   const [showGrid, setShowGrid] = useState(true)
   const [showValidation, setShowValidation] = useState(false)
@@ -145,6 +146,9 @@ export default function App() {
     if (!piece) return
     const catPiece = catMap[piece.pieceId]
     if (!catPiece) return
+    // Don't allow rotation if any connector is connected
+    const isAnyConnected = Object.values(piece.connectedTo).some((v) => v !== null)
+    if (isAnyConnected) return
 
     let increment
     if (freeRotate) {
@@ -234,11 +238,33 @@ export default function App() {
         <LayoutCanvas
           showGrid={showGrid}
           onCanvasClick={handleCanvasClick}
+          onMouseMove={setMouseCanvasPos}
           pendingPieceId={selectedPieceId}
           stageRef={stageRef}
         >
           <BoundaryLayer boundary={state.boundary} />
           <Layer>
+            {selectedPieceId && mouseCanvasPos && catMap[selectedPieceId] && (
+              <TrackPiece
+                key="__ghost__"
+                piece={{
+                  instanceId: '__ghost__',
+                  pieceId: selectedPieceId,
+                  x: mouseCanvasPos.x,
+                  y: mouseCanvasPos.y,
+                  rotation: 0,
+                  mirrorX: false,
+                  connectedTo: {},
+                }}
+                catPiece={catMap[selectedPieceId]}
+                ppi={ppi}
+                isSelected={false}
+                isGhost={true}
+                onSelect={() => {}}
+                onDragEnd={() => {}}
+                onContextMenu={() => {}}
+              />
+            )}
             {state.pieces.map((piece) => {
               const catPiece = catMap[piece.pieceId]
               if (!catPiece) return null
