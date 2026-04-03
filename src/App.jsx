@@ -29,6 +29,7 @@ export default function App() {
   const [selectedPieceId, setSelectedPieceId] = useState(null)    // palette selection (catalogue id)
   const [selectedInstanceId, setSelectedInstanceId] = useState(null) // placed piece selection
   const [mouseCanvasPos, setMouseCanvasPos] = useState(null)
+  const [hoveredConnector, setHoveredConnector] = useState(null) // { instanceId, connectorId }
   const [freeRotate, setFreeRotate] = useState(false)
   const [showGrid, setShowGrid] = useState(true)
   const [showValidation, setShowValidation] = useState(false)
@@ -67,50 +68,46 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [selectedInstanceId, dispatch])
 
-  // Click on an open connector to place the selected piece type connected there,
-  // or repeat the same piece type if nothing is selected
-  function handleConnectorClick(targetInstanceId, targetConnectorId) {
+  // Compute where a piece would land if placed at a given open connector.
+  // Returns { x, y, rotation, pieceId, catPiece, entryConnId } or null.
+  function computePlacementAtConnector(targetInstanceId, targetConnectorId, pieceIdToPlace) {
     const targetPiece = state.pieces.find((p) => p.instanceId === targetInstanceId)
-    if (!targetPiece) return
-
-    const pieceIdToPlace = selectedPieceId ?? targetPiece.pieceId
+    if (!targetPiece || targetPiece.connectedTo[targetConnectorId]) return null
     const catPiece = catMap[pieceIdToPlace]
-    if (!catPiece) return
-    if (targetPiece.connectedTo[targetConnectorId]) return // already connected
-
+    if (!catPiece) return null
     const targetCatPiece = catMap[targetPiece.pieceId]
-    if (!targetCatPiece) return
-
+    if (!targetCatPiece) return null
     const targetWorldConns = getWorldConnectors({ ...targetPiece, connectors: targetCatPiece.connectors }, ppi)
     const targetConn = targetWorldConns.find((c) => c.id === targetConnectorId)
-    if (!targetConn) return
-
-    // Use connector 'A' as the entry connector of the new piece
+    if (!targetConn) return null
     const entryConn = catPiece.connectors.find((c) => c.id === 'A') ?? catPiece.connectors[0]
-    if (!entryConn) return
-
-    // Rotation: entry connector world angle must face target connector (180° apart)
+    if (!entryConn) return null
     const newRotation = ((targetConn.worldAngle + 180) - entryConn.angle + 360) % 360
-
-    // Position: translate so entry connector aligns with target connector world position
     const rad = (newRotation * Math.PI) / 180
     const lx = entryConn.x * ppi
     const ly = entryConn.y * ppi
     const rotatedX = lx * Math.cos(rad) - ly * Math.sin(rad)
     const rotatedY = lx * Math.sin(rad) + ly * Math.cos(rad)
-    const newX = targetConn.worldX - rotatedX
-    const newY = targetConn.worldY - rotatedY
+    return { x: targetConn.worldX - rotatedX, y: targetConn.worldY - rotatedY, rotation: newRotation, pieceId: pieceIdToPlace, catPiece, entryConnId: entryConn.id }
+  }
 
+  // Click on an open connector to place the selected piece type connected there,
+  // or repeat the same piece type if nothing is selected
+  function handleConnectorClick(targetInstanceId, targetConnectorId) {
+    const targetPiece = state.pieces.find((p) => p.instanceId === targetInstanceId)
+    if (!targetPiece) return
+    const pieceIdToPlace = selectedPieceId ?? targetPiece.pieceId
+    const placement = computePlacementAtConnector(targetInstanceId, targetConnectorId, pieceIdToPlace)
+    if (!placement) return
     const instanceId = uuid()
     dispatch({
       type: 'PLACE_PIECE',
-      payload: { instanceId, pieceId: pieceIdToPlace, x: newX, y: newY, rotation: newRotation, mirrorX: false, connectors: catPiece.connectors },
+      payload: { instanceId, pieceId: placement.pieceId, x: placement.x, y: placement.y, rotation: placement.rotation, mirrorX: false, connectors: placement.catPiece.connectors },
     })
     dispatch({
       type: 'CONNECT',
-      payload: { instanceId, connectorId: entryConn.id, targetInstanceId, targetConnectorId },
+      payload: { instanceId, connectorId: placement.entryConnId, targetInstanceId, targetConnectorId },
     })
-    // Keep selectedPieceId set so user can keep clicking to continue the arc
   }
 
   // Place piece on canvas click (click-to-place mode)
@@ -323,27 +320,36 @@ export default function App() {
         >
           <BoundaryLayer boundary={state.boundary} />
           <Layer>
-            {selectedPieceId && mouseCanvasPos && catMap[selectedPieceId] && (
-              <TrackPiece
-                key="__ghost__"
-                piece={{
-                  instanceId: '__ghost__',
-                  pieceId: selectedPieceId,
-                  x: mouseCanvasPos.x,
-                  y: mouseCanvasPos.y,
-                  rotation: 0,
-                  mirrorX: false,
-                  connectedTo: {},
-                }}
-                catPiece={catMap[selectedPieceId]}
-                ppi={ppi}
-                isSelected={false}
-                isGhost={true}
-                onSelect={() => {}}
-                onDragEnd={() => {}}
-                onContextMenu={() => {}}
-              />
-            )}
+            {(() => {
+              // Hover ghost: show preview of piece that would be placed at hovered connector
+              if (hoveredConnector) {
+                const hoverPieceId = selectedPieceId
+                  ?? state.pieces.find((p) => p.instanceId === hoveredConnector.instanceId)?.pieceId
+                const placement = hoverPieceId
+                  ? computePlacementAtConnector(hoveredConnector.instanceId, hoveredConnector.connectorId, hoverPieceId)
+                  : null
+                if (placement) return (
+                  <TrackPiece
+                    key="__ghost__"
+                    piece={{ instanceId: '__ghost__', pieceId: placement.pieceId, x: placement.x, y: placement.y, rotation: placement.rotation, mirrorX: false, connectedTo: {} }}
+                    catPiece={placement.catPiece}
+                    ppi={ppi} isSelected={false} isGhost={true}
+                    onSelect={() => {}} onDragEnd={() => {}} onContextMenu={() => {}}
+                  />
+                )
+              }
+              // Cursor ghost: follow mouse when a piece is selected in sidebar
+              if (selectedPieceId && mouseCanvasPos && catMap[selectedPieceId]) return (
+                <TrackPiece
+                  key="__ghost__"
+                  piece={{ instanceId: '__ghost__', pieceId: selectedPieceId, x: mouseCanvasPos.x, y: mouseCanvasPos.y, rotation: 0, mirrorX: false, connectedTo: {} }}
+                  catPiece={catMap[selectedPieceId]}
+                  ppi={ppi} isSelected={false} isGhost={true}
+                  onSelect={() => {}} onDragEnd={() => {}} onContextMenu={() => {}}
+                />
+              )
+              return null
+            })()}
             {state.pieces.map((piece) => {
               const catPiece = catMap[piece.pieceId]
               if (!catPiece) return null
@@ -358,6 +364,7 @@ export default function App() {
                   onDragEnd={(e) => handleDragEnd(piece.instanceId, e)}
                   onContextMenu={(e) => handleRightClick(piece.instanceId, e)}
                   onConnectorClick={(connectorId) => handleConnectorClick(piece.instanceId, connectorId)}
+                  onConnectorHover={(connectorId) => setHoveredConnector(connectorId ? { instanceId: piece.instanceId, connectorId } : null)}
                 />
               )
             })}

@@ -73,7 +73,7 @@ function CrossingShape({ geometry, connectors }) {
   )
 }
 
-export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDragEnd, onContextMenu, onConnectorClick, isGhost = false }) {
+export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDragEnd, onContextMenu, onConnectorClick, onConnectorHover, isGhost = false }) {
   const { x, y, rotation, mirrorX, connectedTo } = piece
   const { geometry, connectors } = catPiece
 
@@ -120,6 +120,12 @@ export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDr
             fill={isConnected ? CONNECTED_ENDPOINT_COLOR : OPEN_ENDPOINT_COLOR}
             onClick={!isConnected && onConnectorClick
               ? (e) => { e.cancelBubble = true; onConnectorClick(c.id) }
+              : undefined}
+            onMouseEnter={!isConnected && onConnectorHover
+              ? (e) => { e.target.getStage().container().style.cursor = 'pointer'; onConnectorHover(c.id) }
+              : undefined}
+            onMouseLeave={!isConnected && onConnectorHover
+              ? (e) => { e.target.getStage().container().style.cursor = ''; onConnectorHover(null) }
               : undefined}
           />
         )
