@@ -4,7 +4,7 @@ import { useLayoutReducer } from './hooks/useLayoutReducer'
 import { useValidation } from './hooks/useValidation'
 import { getWorldConnectors } from './geometry/connectors'
 import { findBestSnap } from './geometry/snap'
-import { PIXELS_PER_INCH, SNAP_THRESHOLD } from './constants'
+import { PIXELS_PER_INCH, SNAP_THRESHOLD, ANGLE_TOLERANCE } from './constants'
 import { saveLayout, loadLayout } from './utils/fileio'
 import { exportToPNG, exportPartsListHTML } from './utils/export'
 import Toolbar from './components/Toolbar'
@@ -88,7 +88,16 @@ export default function App() {
     setSelectedPieceId(null)
   }
 
-  // Drag end: attempt snap, then commit position
+  function getRotationIncrement(catPiece) {
+    const geo = catPiece.geometry
+    if (geo?.type === 'curve') return geo.arc
+    if (geo?.type === 'straight') return 45
+    if (geo?.type === 'turnout') return 30
+    if (geo?.type === 'crossing' || geo?.type === 'crossover') return 90
+    return 45
+  }
+
+  // Drag end: try all rotation increments to find best snap, then commit
   function handleDragEnd(instanceId, e) {
     const node = e.target
     const newX = node.x()
@@ -98,10 +107,6 @@ export default function App() {
     if (!piece) return
     const catPiece = catMap[piece.pieceId]
     if (!catPiece) return
-
-    // Compute world connectors at the new drag position
-    const draggedWithNewPos = { ...piece, x: newX, y: newY, connectors: catPiece.connectors }
-    const draggedWorldConns = getWorldConnectors(draggedWithNewPos, ppi)
 
     // Build world-connector data for all other placed pieces
     const placedWorldPieces = state.pieces
@@ -117,21 +122,49 @@ export default function App() {
       })
       .filter(Boolean)
 
-    const snap = findBestSnap(draggedWorldConns, placedWorldPieces, SNAP_THRESHOLD, 10)
+    if (placedWorldPieces.length === 0) {
+      dispatch({ type: 'MOVE_PIECE', payload: { instanceId, x: newX, y: newY } })
+      return
+    }
 
-    if (snap) {
-      const snappedX = newX + snap.dx
-      const snappedY = newY + snap.dy
+    // Try every rotation increment — pick the one that yields the closest snap
+    const AUTO_SNAP_THRESHOLD = 80
+    const increment = getRotationIncrement(catPiece)
+    const steps = Math.round(360 / increment)
+
+    let bestSnap = null
+    let bestRotation = piece.rotation
+    let bestDist = Infinity
+
+    for (let i = 0; i < steps; i++) {
+      const tryRotation = (i * increment) % 360
+      const draggedAtRot = { ...piece, x: newX, y: newY, rotation: tryRotation, connectors: catPiece.connectors }
+      const draggedWorldConns = getWorldConnectors(draggedAtRot, ppi)
+      const snap = findBestSnap(draggedWorldConns, placedWorldPieces, AUTO_SNAP_THRESHOLD, ANGLE_TOLERANCE)
+      if (snap) {
+        const dist = Math.hypot(snap.dx, snap.dy)
+        if (dist < bestDist) {
+          bestDist = dist
+          bestSnap = snap
+          bestRotation = tryRotation
+        }
+      }
+    }
+
+    if (bestSnap) {
+      const snappedX = newX + bestSnap.dx
+      const snappedY = newY + bestSnap.dy
       node.x(snappedX)
       node.y(snappedY)
-      dispatch({ type: 'MOVE_PIECE', payload: { instanceId, x: snappedX, y: snappedY } })
+      node.rotation(bestRotation)
+      dispatch({ type: 'MOVE_PIECE', payload: { instanceId, x: snappedX, y: snappedY, rotation: bestRotation } })
       dispatch({
         type: 'CONNECT',
         payload: {
           instanceId,
-          connectorId: snap.draggedConnectorId,
-          targetInstanceId: snap.targetInstanceId,
-          targetConnectorId: snap.targetConnectorId,
+          connectorId: bestSnap.draggedConnectorId,
+          targetInstanceId: bestSnap.targetInstanceId,
+          targetConnectorId: bestSnap.targetConnectorId,
         },
       })
     } else {

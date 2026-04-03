@@ -72,7 +72,7 @@ function coreReducer(state, action) {
     }
 
     case 'MOVE_PIECE': {
-      const { instanceId, x, y } = action.payload
+      const { instanceId, x, y, rotation } = action.payload
       // Moving disconnects all connections — piece is floating after a move
       const pieces = state.pieces.map((p) => {
         if (p.instanceId !== instanceId) {
@@ -85,7 +85,7 @@ function coreReducer(state, action) {
           return { ...p, connectedTo }
         }
         const connectedTo = Object.fromEntries(Object.keys(p.connectedTo).map((k) => [k, null]))
-        return { ...p, x, y, connectedTo }
+        return { ...p, x, y, ...(rotation !== undefined ? { rotation } : {}), connectedTo }
       })
       return { ...state, pieces }
     }
