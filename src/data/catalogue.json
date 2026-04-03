@@ -1,0 +1,412 @@
+{
+  "N": [
+    {
+      "id": "S-0.75", "name": "0.75\" Connector", "category": "straight",
+      "itemNo": "44899", "price": 3.56,
+      "geometry": { "type": "straight", "length": 0.75 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 0.75, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "S-0.875", "name": "0.875\" Connector", "category": "straight",
+      "itemNo": "44899", "price": 3.56,
+      "geometry": { "type": "straight", "length": 0.875 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 0.875, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "S-1.125", "name": "1.125\" Connector", "category": "straight",
+      "itemNo": "44829", "price": 5.79,
+      "geometry": { "type": "straight", "length": 1.125 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 1.125, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "S-1.5", "name": "1.5\" Connector", "category": "straight",
+      "itemNo": "44899", "price": 3.56,
+      "geometry": { "type": "straight", "length": 1.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 1.5, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "S-2.25", "name": "2.25\" Short Section", "category": "straight",
+      "itemNo": "44829", "price": 5.79,
+      "geometry": { "type": "straight", "length": 2.25 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 2.25, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "S-4.5", "name": "4.5\" Short Section", "category": "straight",
+      "itemNo": "44829", "price": 5.79,
+      "geometry": { "type": "straight", "length": 4.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 4.5, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "44811", "name": "5\" Straight", "category": "straight",
+      "itemNo": "44811", "price": 3.50,
+      "geometry": { "type": "straight", "length": 5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "44815", "name": "10\" Straight", "category": "straight",
+      "itemNo": "44815", "price": 5.33,
+      "geometry": { "type": "straight", "length": 10 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 10, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "44887", "name": "30\" Straight", "category": "straight",
+      "itemNo": "44887", "price": 18.26,
+      "geometry": { "type": "straight", "length": 30 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 30, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "44820", "name": "10\" Terminal Rerailer", "category": "special",
+      "itemNo": "44820", "price": 15.95,
+      "geometry": { "type": "straight", "length": 10 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 10, "y": 0, "angle": 0 }
+      ]
+    },
+    {
+      "id": "44802", "name": "11.25\" Curved Terminal Rerailer", "category": "special",
+      "itemNo": "44802", "price": 15.50,
+      "geometry": { "type": "curve", "radius": 11.25, "arc": 30 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5.625, "y": 1.508, "angle": 30 }
+      ]
+    },
+    {
+      "id": "44801", "name": "11.25\" Radius Curve (30°)", "category": "curve",
+      "itemNo": "44801", "price": 3.33,
+      "geometry": { "type": "curve", "radius": 11.25, "arc": 30 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5.625, "y": 1.508, "angle": 30 }
+      ]
+    },
+    {
+      "id": "44821", "name": "11.25\" Radius Half Section (15°)", "category": "curve",
+      "itemNo": "44821", "price": 3.33,
+      "geometry": { "type": "curve", "radius": 11.25, "arc": 15 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 2.912, "y": 0.384, "angle": 15 }
+      ]
+    },
+    {
+      "id": "44831", "name": "11.25\" Radius Quarter Section (7.5°)", "category": "curve",
+      "itemNo": "44831", "price": 2.75,
+      "geometry": { "type": "curve", "radius": 11.25, "arc": 7.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 1.469, "y": 0.097, "angle": 7.5 }
+      ]
+    },
+    {
+      "id": "44001", "name": "11.25\" Radius Curve — Concrete Ties (30°)", "category": "curve",
+      "itemNo": "44001", "price": 3.33,
+      "geometry": { "type": "curve", "radius": 11.25, "arc": 30, "ties": "concrete" },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5.625, "y": 1.508, "angle": 30 }
+      ]
+    },
+    {
+      "id": "44852", "name": "12.50\" Radius Curve (30°)", "category": "curve",
+      "itemNo": "44852", "price": 4.42,
+      "geometry": { "type": "curve", "radius": 12.5, "arc": 30 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 6.25, "y": 1.675, "angle": 30 }
+      ]
+    },
+    {
+      "id": "44822", "name": "12.50\" Radius Half Section (15°)", "category": "curve",
+      "itemNo": "44822", "price": 3.33,
+      "geometry": { "type": "curve", "radius": 12.5, "arc": 15 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 3.235, "y": 0.426, "angle": 15 }
+      ]
+    },
+    {
+      "id": "44832", "name": "12.50\" Radius Quarter Section (7.5°)", "category": "curve",
+      "itemNo": "44832", "price": 2.58,
+      "geometry": { "type": "curve", "radius": 12.5, "arc": 7.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 1.632, "y": 0.107, "angle": 7.5 }
+      ]
+    },
+    {
+      "id": "44853", "name": "14\" Radius Curve (30°)", "category": "curve",
+      "itemNo": "44853", "price": 4.67,
+      "geometry": { "type": "curve", "radius": 14, "arc": 30 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 7.0, "y": 1.874, "angle": 30 }
+      ]
+    },
+    {
+      "id": "44854", "name": "15.50\" Radius Curve (30°)", "category": "curve",
+      "itemNo": "44854", "price": 4.67,
+      "geometry": { "type": "curve", "radius": 15.5, "arc": 30 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 7.75, "y": 2.075, "angle": 30 }
+      ]
+    },
+    {
+      "id": "44834", "name": "15.50\" Radius Quarter Section (7.5°)", "category": "curve",
+      "itemNo": "44834", "price": 3.29,
+      "geometry": { "type": "curve", "radius": 15.5, "arc": 7.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 2.023, "y": 0.133, "angle": 7.5 }
+      ]
+    },
+    {
+      "id": "44855", "name": "17.50\" Radius Curve (15°)", "category": "curve",
+      "itemNo": "44855", "price": 3.96,
+      "geometry": { "type": "curve", "radius": 17.5, "arc": 15 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 4.529, "y": 0.597, "angle": 15 }
+      ]
+    },
+    {
+      "id": "44825", "name": "17.50\" Radius Half Section (7.5°)", "category": "curve",
+      "itemNo": "44825", "price": 3.33,
+      "geometry": { "type": "curve", "radius": 17.5, "arc": 7.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 2.284, "y": 0.151, "angle": 7.5 }
+      ]
+    },
+    {
+      "id": "44835", "name": "17.50\" Radius Quarter Section (3.75°)", "category": "curve",
+      "itemNo": "44835", "price": 3.13,
+      "geometry": { "type": "curve", "radius": 17.5, "arc": 3.75 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 1.145, "y": 0.037, "angle": 3.75 }
+      ]
+    },
+    {
+      "id": "44804", "name": "19\" Radius Curve (15°)", "category": "curve",
+      "itemNo": "44804", "price": 4.58,
+      "geometry": { "type": "curve", "radius": 19, "arc": 15 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 4.917, "y": 0.648, "angle": 15 }
+      ]
+    },
+    {
+      "id": "44856", "name": "19\" Radius Half Section (7.5°)", "category": "curve",
+      "itemNo": "44856", "price": 3.13,
+      "geometry": { "type": "curve", "radius": 19, "arc": 7.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 2.480, "y": 0.164, "angle": 7.5 }
+      ]
+    },
+    {
+      "id": "44836", "name": "19\" Radius Quarter Section (3.75°)", "category": "curve",
+      "itemNo": "44836", "price": 2.38,
+      "geometry": { "type": "curve", "radius": 19, "arc": 3.75 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 1.243, "y": 0.040, "angle": 3.75 }
+      ]
+    },
+    {
+      "id": "44861", "name": "Remote Turnout — Left", "category": "turnout",
+      "itemNo": "44861", "price": 65.00,
+      "geometry": { "type": "turnout", "hand": "left", "frog": "standard", "divergeRadius": 11.25 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 3.75, "y": 0, "angle": 0 },
+        { "id": "C", "x": 3.70, "y": -0.610, "angle": 340.8 }
+      ]
+    },
+    {
+      "id": "44862", "name": "Remote Turnout — Right", "category": "turnout",
+      "itemNo": "44862", "price": 65.00,
+      "geometry": { "type": "turnout", "hand": "right", "frog": "standard", "divergeRadius": 11.25 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 3.75, "y": 0, "angle": 0 },
+        { "id": "C", "x": 3.70, "y": 0.610, "angle": 19.2 }
+      ]
+    },
+    {
+      "id": "44859", "name": "#6 Turnout — Left", "category": "turnout",
+      "itemNo": "44859", "price": 74.75,
+      "geometry": { "type": "turnout", "hand": "left", "frog": "#6" },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5.5, "y": 0, "angle": 0 },
+        { "id": "C", "x": 5.42, "y": -0.90, "angle": 350.54 }
+      ]
+    },
+    {
+      "id": "44860", "name": "#6 Turnout — Right", "category": "turnout",
+      "itemNo": "44860", "price": 74.75,
+      "geometry": { "type": "turnout", "hand": "right", "frog": "#6" },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5.5, "y": 0, "angle": 0 },
+        { "id": "C", "x": 5.42, "y": 0.90, "angle": 9.46 }
+      ]
+    },
+    {
+      "id": "44863", "name": "#4 Turnout — Left", "category": "turnout",
+      "itemNo": "44863", "price": 73.75,
+      "geometry": { "type": "turnout", "hand": "left", "frog": "#4" },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 3.75, "y": 0, "angle": 0 },
+        { "id": "C", "x": 3.62, "y": -0.91, "angle": 346.0 }
+      ]
+    },
+    {
+      "id": "44864", "name": "#4 Turnout — Right", "category": "turnout",
+      "itemNo": "44864", "price": 73.75,
+      "geometry": { "type": "turnout", "hand": "right", "frog": "#4" },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 3.75, "y": 0, "angle": 0 },
+        { "id": "C", "x": 3.62, "y": 0.91, "angle": 14.0 }
+      ]
+    },
+    {
+      "id": "44875", "name": "#6 Single Crossover — Left", "category": "turnout",
+      "itemNo": "44875", "price": 132.00,
+      "geometry": { "type": "crossover", "hand": "left", "frog": "#6", "trackSpacing": 1.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 7.5, "y": 0, "angle": 0 },
+        { "id": "C", "x": 0, "y": -1.5, "angle": 180 },
+        { "id": "D", "x": 7.5, "y": -1.5, "angle": 0 }
+      ]
+    },
+    {
+      "id": "44876", "name": "#6 Single Crossover — Right", "category": "turnout",
+      "itemNo": "44876", "price": 132.00,
+      "geometry": { "type": "crossover", "hand": "right", "frog": "#6", "trackSpacing": 1.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 7.5, "y": 0, "angle": 0 },
+        { "id": "C", "x": 0, "y": 1.5, "angle": 180 },
+        { "id": "D", "x": 7.5, "y": 1.5, "angle": 0 }
+      ]
+    },
+    {
+      "id": "44061", "name": "Remote Turnout — Left (Concrete Ties)", "category": "turnout",
+      "itemNo": "44061", "price": 66.00,
+      "geometry": { "type": "turnout", "hand": "left", "frog": "standard", "divergeRadius": 11.25, "ties": "concrete" },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 3.75, "y": 0, "angle": 0 },
+        { "id": "C", "x": 3.70, "y": -0.610, "angle": 340.8 }
+      ]
+    },
+    {
+      "id": "44062", "name": "Remote Turnout — Right (Concrete Ties)", "category": "turnout",
+      "itemNo": "44062", "price": 66.00,
+      "geometry": { "type": "turnout", "hand": "right", "frog": "standard", "divergeRadius": 11.25, "ties": "concrete" },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 },
+        { "id": "B", "x": 3.75, "y": 0, "angle": 0 },
+        { "id": "C", "x": 3.70, "y": 0.610, "angle": 19.2 }
+      ]
+    },
+    {
+      "id": "44840", "name": "30° Crossing", "category": "crossing",
+      "itemNo": "44840", "price": 29.75,
+      "geometry": { "type": "crossing", "angle": 30, "halfLength": 5 },
+      "connectors": [
+        { "id": "A", "x": -5, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5, "y": 0, "angle": 0 },
+        { "id": "C", "x": -4.330, "y": -2.5, "angle": 210 },
+        { "id": "D", "x": 4.330, "y": 2.5, "angle": 30 }
+      ]
+    },
+    {
+      "id": "44843", "name": "45° Crossing", "category": "crossing",
+      "itemNo": "44843", "price": 29.75,
+      "geometry": { "type": "crossing", "angle": 45, "halfLength": 5 },
+      "connectors": [
+        { "id": "A", "x": -5, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5, "y": 0, "angle": 0 },
+        { "id": "C", "x": -3.536, "y": -3.536, "angle": 225 },
+        { "id": "D", "x": 3.536, "y": 3.536, "angle": 45 }
+      ]
+    },
+    {
+      "id": "44842", "name": "60° Crossing", "category": "crossing",
+      "itemNo": "44842", "price": 29.75,
+      "geometry": { "type": "crossing", "angle": 60, "halfLength": 5 },
+      "connectors": [
+        { "id": "A", "x": -5, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5, "y": 0, "angle": 0 },
+        { "id": "C", "x": -2.5, "y": -4.330, "angle": 240 },
+        { "id": "D", "x": 2.5, "y": 4.330, "angle": 60 }
+      ]
+    },
+    {
+      "id": "44841", "name": "90° Crossing", "category": "crossing",
+      "itemNo": "44841", "price": 29.75,
+      "geometry": { "type": "crossing", "angle": 90, "halfLength": 5 },
+      "connectors": [
+        { "id": "A", "x": -5, "y": 0, "angle": 180 },
+        { "id": "B", "x": 5, "y": 0, "angle": 0 },
+        { "id": "C", "x": 0, "y": -5, "angle": 270 },
+        { "id": "D", "x": 0, "y": 5, "angle": 90 }
+      ]
+    },
+    {
+      "id": "44891", "name": "Hayes Bumper", "category": "bumper",
+      "itemNo": "44891", "price": 11.25,
+      "geometry": { "type": "bumper", "length": 1.5 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 }
+      ]
+    },
+    {
+      "id": "44858", "name": "Flashing LED Bumper", "category": "bumper",
+      "itemNo": "44858", "price": 36.00,
+      "geometry": { "type": "bumper", "length": 1.3 },
+      "connectors": [
+        { "id": "A", "x": 0, "y": 0, "angle": 180 }
+      ]
+    }
+  ],
+  "HO": [],
+  "O": [],
+  "G": []
+}
