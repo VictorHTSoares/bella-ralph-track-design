@@ -58,11 +58,23 @@ export function validateLayout(pieces, catalogueItems, ppi) {
     })
   }
 
+  // Build set of directly-connected pairs — connected pieces touch by design, not overlap
+  const connectedPairs = new Set()
+  for (const piece of pieces) {
+    for (const target of Object.values(piece.connectedTo)) {
+      if (target) {
+        const [targetId] = target.split(':')
+        connectedPairs.add([piece.instanceId, targetId].sort().join('|'))
+      }
+    }
+  }
+
   // O(n²) overlap check — acceptable for typical layout sizes
   for (let i = 0; i < boxes.length; i++) {
     for (let j = i + 1; j < boxes.length; j++) {
       const a = boxes[i]
       const b = boxes[j]
+      if (connectedPairs.has([a.instanceId, b.instanceId].sort().join('|'))) continue
       const overlaps =
         a.minX < b.maxX && a.maxX > b.minX &&
         a.minY < b.maxY && a.maxY > b.minY

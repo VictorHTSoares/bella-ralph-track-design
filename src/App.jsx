@@ -108,6 +108,28 @@ export default function App() {
       type: 'CONNECT',
       payload: { instanceId, connectorId: placement.entryConnId, targetInstanceId, targetConnectorId },
     })
+
+    // Loop closure: check if any other connector of the new piece lands on an existing open connector
+    const newWorldConns = getWorldConnectors({
+      instanceId, pieceId: placement.pieceId, x: placement.x, y: placement.y,
+      rotation: placement.rotation, mirrorX: false, connectors: placement.catPiece.connectors,
+    }, ppi)
+
+    for (const nwc of newWorldConns) {
+      if (nwc.id === placement.entryConnId) continue
+      for (const existing of state.pieces) {
+        const existingCat = catMap[existing.pieceId]
+        if (!existingCat) continue
+        const existingWorldConns = getWorldConnectors({ ...existing, connectors: existingCat.connectors }, ppi)
+        for (const ewc of existingWorldConns) {
+          if (existing.connectedTo[ewc.id]) continue // already connected
+          if (existing.instanceId === targetInstanceId && ewc.id === targetConnectorId) continue
+          if (Math.hypot(nwc.worldX - ewc.worldX, nwc.worldY - ewc.worldY) < SNAP_THRESHOLD * 2) {
+            dispatch({ type: 'CONNECT', payload: { instanceId, connectorId: nwc.id, targetInstanceId: existing.instanceId, targetConnectorId: ewc.id } })
+          }
+        }
+      }
+    }
   }
 
   // Place piece on canvas click (click-to-place mode)
