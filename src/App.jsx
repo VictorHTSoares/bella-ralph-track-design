@@ -67,6 +67,51 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [selectedInstanceId, dispatch])
 
+  // Click on an open connector to place the selected piece type connected there
+  function handleConnectorClick(targetInstanceId, targetConnectorId) {
+    if (!selectedPieceId) return
+    const catPiece = catMap[selectedPieceId]
+    if (!catPiece) return
+
+    const targetPiece = state.pieces.find((p) => p.instanceId === targetInstanceId)
+    if (!targetPiece) return
+    if (targetPiece.connectedTo[targetConnectorId]) return // already connected
+
+    const targetCatPiece = catMap[targetPiece.pieceId]
+    if (!targetCatPiece) return
+
+    const targetWorldConns = getWorldConnectors({ ...targetPiece, connectors: targetCatPiece.connectors }, ppi)
+    const targetConn = targetWorldConns.find((c) => c.id === targetConnectorId)
+    if (!targetConn) return
+
+    // Use connector 'A' as the entry connector of the new piece
+    const entryConn = catPiece.connectors.find((c) => c.id === 'A') ?? catPiece.connectors[0]
+    if (!entryConn) return
+
+    // Rotation: entry connector world angle must face target connector (180° apart)
+    const newRotation = ((targetConn.worldAngle + 180) - entryConn.angle + 360) % 360
+
+    // Position: translate so entry connector aligns with target connector world position
+    const rad = (newRotation * Math.PI) / 180
+    const lx = entryConn.x * ppi
+    const ly = entryConn.y * ppi
+    const rotatedX = lx * Math.cos(rad) - ly * Math.sin(rad)
+    const rotatedY = lx * Math.sin(rad) + ly * Math.cos(rad)
+    const newX = targetConn.worldX - rotatedX
+    const newY = targetConn.worldY - rotatedY
+
+    const instanceId = uuid()
+    dispatch({
+      type: 'PLACE_PIECE',
+      payload: { instanceId, pieceId: selectedPieceId, x: newX, y: newY, rotation: newRotation, mirrorX: false, connectors: catPiece.connectors },
+    })
+    dispatch({
+      type: 'CONNECT',
+      payload: { instanceId, connectorId: entryConn.id, targetInstanceId, targetConnectorId },
+    })
+    // Keep selectedPieceId set so user can keep clicking to continue the arc
+  }
+
   // Place piece on canvas click (click-to-place mode)
   function handleCanvasClick(pos) {
     if (!selectedPieceId) return
@@ -311,6 +356,7 @@ export default function App() {
                   onSelect={() => setSelectedInstanceId(piece.instanceId)}
                   onDragEnd={(e) => handleDragEnd(piece.instanceId, e)}
                   onContextMenu={(e) => handleRightClick(piece.instanceId, e)}
+                  onConnectorClick={selectedPieceId ? (connectorId) => handleConnectorClick(piece.instanceId, connectorId) : undefined}
                 />
               )
             })}

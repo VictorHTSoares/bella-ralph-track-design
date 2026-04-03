@@ -73,7 +73,7 @@ function CrossingShape({ geometry, connectors }) {
   )
 }
 
-export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDragEnd, onContextMenu, isGhost = false }) {
+export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDragEnd, onContextMenu, onConnectorClick, isGhost = false }) {
   const { x, y, rotation, mirrorX, connectedTo } = piece
   const { geometry, connectors } = catPiece
 
@@ -112,8 +112,16 @@ export default function TrackPiece({ piece, catPiece, isSelected, onSelect, onDr
         const cy = c.y * PPT
         const isConnected = connectedTo[c.id] !== null && connectedTo[c.id] !== undefined
         return (
-          <Circle key={c.id} x={cx} y={cy} radius={3}
-            fill={isConnected ? CONNECTED_ENDPOINT_COLOR : OPEN_ENDPOINT_COLOR} />
+          <Circle
+            key={c.id}
+            x={cx}
+            y={cy}
+            radius={5}
+            fill={isConnected ? CONNECTED_ENDPOINT_COLOR : OPEN_ENDPOINT_COLOR}
+            onClick={!isConnected && onConnectorClick
+              ? (e) => { e.cancelBubble = true; onConnectorClick(c.id) }
+              : undefined}
+          />
         )
       })}
     </Group>
