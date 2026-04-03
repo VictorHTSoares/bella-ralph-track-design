@@ -67,14 +67,15 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [selectedInstanceId, dispatch])
 
-  // Click on an open connector to place the selected piece type connected there
+  // Click on an open connector to place the selected piece type connected there,
+  // or repeat the same piece type if nothing is selected
   function handleConnectorClick(targetInstanceId, targetConnectorId) {
-    if (!selectedPieceId) return
-    const catPiece = catMap[selectedPieceId]
-    if (!catPiece) return
-
     const targetPiece = state.pieces.find((p) => p.instanceId === targetInstanceId)
     if (!targetPiece) return
+
+    const pieceIdToPlace = selectedPieceId ?? targetPiece.pieceId
+    const catPiece = catMap[pieceIdToPlace]
+    if (!catPiece) return
     if (targetPiece.connectedTo[targetConnectorId]) return // already connected
 
     const targetCatPiece = catMap[targetPiece.pieceId]
@@ -103,7 +104,7 @@ export default function App() {
     const instanceId = uuid()
     dispatch({
       type: 'PLACE_PIECE',
-      payload: { instanceId, pieceId: selectedPieceId, x: newX, y: newY, rotation: newRotation, mirrorX: false, connectors: catPiece.connectors },
+      payload: { instanceId, pieceId: pieceIdToPlace, x: newX, y: newY, rotation: newRotation, mirrorX: false, connectors: catPiece.connectors },
     })
     dispatch({
       type: 'CONNECT',
@@ -356,7 +357,7 @@ export default function App() {
                   onSelect={() => setSelectedInstanceId(piece.instanceId)}
                   onDragEnd={(e) => handleDragEnd(piece.instanceId, e)}
                   onContextMenu={(e) => handleRightClick(piece.instanceId, e)}
-                  onConnectorClick={selectedPieceId ? (connectorId) => handleConnectorClick(piece.instanceId, connectorId) : undefined}
+                  onConnectorClick={(connectorId) => handleConnectorClick(piece.instanceId, connectorId)}
                 />
               )
             })}
